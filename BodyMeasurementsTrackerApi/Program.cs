@@ -33,6 +33,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Use the defined CORS policy
+app.UseCors("AllowLocalhost3000");
+
 app.UseAuthorization();
 
 app.MapControllers();
