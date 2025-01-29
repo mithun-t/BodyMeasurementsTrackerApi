@@ -20,6 +20,7 @@ namespace BodyMeasurementsTrackerApi.Controllers
             var bodyMeasurements = dbContext.BodyMeasurements.ToList();
             return Ok(bodyMeasurements);
         }
+
         [HttpPost]
         public IActionResult SaveBodyMeasurement(BodyMeasurementDto bodyMeasurementDto)
         {
@@ -44,6 +45,7 @@ namespace BodyMeasurementsTrackerApi.Controllers
             dbContext.SaveChanges();
             return Ok(bodyMeasurementEntity);
         }
+
         [HttpGet("{id:int}")]
         public IActionResult GetBodyMeasurementByID(int id)
         {
@@ -56,12 +58,40 @@ namespace BodyMeasurementsTrackerApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteBodyMeasurement(int id) {
-           var bodyMeasurement = dbContext.BodyMeasurements.Find(id);
-            if (bodyMeasurement == null) {
+        public IActionResult DeleteBodyMeasurement(int id)
+        {
+            var bodyMeasurement = dbContext.BodyMeasurements.Find(id);
+            if (bodyMeasurement == null)
+            {
                 return NotFound();
             }
             dbContext.Remove(bodyMeasurement);
+            dbContext.SaveChanges();
+            return Ok(bodyMeasurement);
+        }
+
+        [HttpPut("{id:int}")]
+        public IActionResult UpdateBodyMeasurement(int id, BodyMeasurementDto bodyMeasurementDto)
+        {
+            var bodyMeasurement = dbContext.BodyMeasurements.Find(id);
+            if (bodyMeasurement == null)
+            {
+                return NotFound();
+            }
+            bodyMeasurement.MeasuredDate = bodyMeasurementDto.MeasuredDate;
+            bodyMeasurement.BodyWeight = bodyMeasurementDto.BodyWeight;
+            bodyMeasurement.BodyFatPercentage = bodyMeasurementDto.BodyFatPercentage;
+            bodyMeasurement.Neck = bodyMeasurementDto.Neck;
+            bodyMeasurement.Shoulder = bodyMeasurementDto.Shoulder;
+            bodyMeasurement.Chest = bodyMeasurementDto.Chest;
+            bodyMeasurement.Biceps = bodyMeasurementDto.Biceps;
+            bodyMeasurement.Forearm = bodyMeasurementDto.Forearm;
+            bodyMeasurement.Waist = bodyMeasurementDto.Waist;
+            bodyMeasurement.Hips = bodyMeasurementDto.Hips;
+            bodyMeasurement.Thighs = bodyMeasurementDto.Thighs;
+            bodyMeasurement.Calves = bodyMeasurementDto.Calves;
+            bodyMeasurement.ProgressPicture = bodyMeasurementDto.ProgressPicture;
+            bodyMeasurement.Notes = bodyMeasurementDto.Notes;
             dbContext.SaveChanges();
             return Ok(bodyMeasurement);
         }
