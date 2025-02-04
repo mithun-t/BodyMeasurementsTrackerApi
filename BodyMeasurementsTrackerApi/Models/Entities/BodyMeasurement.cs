@@ -17,5 +17,7 @@
         public double? Calves { get; set; }
         public string? ProgressPicture { get; set; }
         public string? Notes { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; } = null!;
     }
 }

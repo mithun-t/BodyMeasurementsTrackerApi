@@ -21,9 +21,25 @@ namespace BodyMeasurementsTrackerApi.Controllers
             return Ok(bodyMeasurements);
         }
 
-        [HttpPost]
-        public IActionResult SaveBodyMeasurement(BodyMeasurementDto bodyMeasurementDto)
+        [HttpGet("{UserId}")]
+        public IActionResult GetUserBodyMeasurements(int UserId)
         {
+            var bodyMeasurements = dbContext.BodyMeasurements
+                .Where(b => b.UserId == UserId)
+                .ToList();
+            return Ok(bodyMeasurements);
+        }
+
+        [HttpPost("{UserId}")]
+        public IActionResult SaveBodyMeasurement(int UserId, BodyMeasurementDto bodyMeasurementDto)
+        {
+            var user = dbContext.Users.Find(UserId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             var bodyMeasurementEntity = new BodyMeasurement
             {
                 MeasuredDate = bodyMeasurementDto.MeasuredDate,
@@ -39,7 +55,8 @@ namespace BodyMeasurementsTrackerApi.Controllers
                 Thighs = bodyMeasurementDto.Thighs,
                 Calves = bodyMeasurementDto.Calves,
                 ProgressPicture = bodyMeasurementDto.ProgressPicture,
-                Notes = bodyMeasurementDto.Notes
+                Notes = bodyMeasurementDto.Notes,
+                UserId = UserId
             };
             dbContext.BodyMeasurements.Add(bodyMeasurementEntity);
             dbContext.SaveChanges();
