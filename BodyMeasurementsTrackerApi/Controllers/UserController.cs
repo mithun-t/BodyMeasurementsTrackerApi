@@ -47,12 +47,12 @@ namespace BodyMeasurementsTrackerApi.Controllers
         [HttpPost("login")]
         public IActionResult UserLogin(UserDto userDto)
         {
-            var user = dbContext.Users.Where(u => u.Username == userDto.Username && u.Password == userDto.Password).ToList();
+            var user = dbContext.Users.SingleOrDefault(u => u.Username == userDto.Username && u.Password == userDto.Password);
             if (user == null)
             {
-                return NotFound();
+                return Unauthorized(new { message = "Invalid username or password" });
             }
-            return Ok(user);
+            return Ok(new { message = "Login Successfull" , userId = user.UserId});
         }
     }
 }

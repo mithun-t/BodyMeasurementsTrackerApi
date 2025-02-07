@@ -21,7 +21,7 @@ namespace BodyMeasurementsTrackerApi.Controllers
             return Ok(bodyMeasurements);
         }
 
-        [HttpGet("{UserId}")]
+        [HttpGet("User/{UserId}")]
         public IActionResult GetUserBodyMeasurements(int UserId)
         {
             var bodyMeasurements = dbContext.BodyMeasurements
